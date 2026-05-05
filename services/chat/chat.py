@@ -55,12 +55,14 @@ def get_chat_history(thread_id, user_email):
     if not res.data:
         return None
 
-    msgs = supabase.table("chat_messages")\
-        .select("*")\
+    # Fetch messages for the thread
+    messages_res = supabase.table("chat_messages")\
+        .select("sender, message, timestamp")\
         .eq("thread_id", thread_id)\
-        .order("timestamp")\
+        .order("timestamp", desc=False)\
         .execute()
-    return msgs.data
+    
+    return messages_res.data
 
 def handle_llm_response(thread_id):
     history = get_message_history(thread_id)
