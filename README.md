@@ -4,7 +4,7 @@ This is the FastAPI backend for the Financial Adviser project.
 
 
 
-## 🚀 Getting Started
+##  Getting Started
 
 Follow these steps to set up and run the backend server locally.
 
