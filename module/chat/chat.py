@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Header
-from migration.schemas import ChatThreadCreate, ChatMessageCreate, UpdateMessageRequest
+from migration.schemas import ChatThreadCreate, ChatMessageCreate
 from jose import jwt, JWTError
 import os
 # from services.chat import chat
