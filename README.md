@@ -64,7 +64,7 @@ uvicorn main:app --reload
 ├── main.py
 ├── requirements.txt
 ├── app/
-│   ├── routes/
+│   ├── migrations/
 │   ├── services/
 │   └── ...
 ```
