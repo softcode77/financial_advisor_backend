@@ -57,7 +57,7 @@ uvicorn main:app --reload
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 .
@@ -71,7 +71,7 @@ uvicorn main:app --reload
 
 ---
 
-## ✅ Notes
+##  Notes
 
 - Requires **Python 3.9+**
 - Place any environment variables in a `.env` file if needed
