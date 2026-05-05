@@ -26,3 +26,4 @@ class ChatMessageOut(BaseModel):
     sender: str  # 'user' or 'llm'
     message: str
     timestamp: str
+ 
