@@ -1,80 +1,113 @@
-# Financial Adviser Backend
+# FastAPI Backend
 
-This is the FastAPI backend for the Financial Adviser project.
+This project is a FastAPI backend service that integrates authentication, chat functionality, and external APIs (Supabase, Tavily Search, and Anthropic).
 
+---
 
+## 🚀 Prerequisites
+Before starting, ensure you have the following installed:
+- [Python 3.11+](https://www.python.org/downloads/)
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/)
 
-##  Getting Started
+You must also create accounts and retrieve API keys from:
+- [Supabase](https://supabase.com/)
+- [Tavily Search](https://app.tavily.com/)
+- [Anthropic](https://console.anthropic.com/)
 
-Follow these steps to set up and run the backend server locally.
+---
 
+## 🔑 Environment Variables
+You **must** create a `.env` file in the root directory of the project.
 
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourname/financial-adviser-backend.git
-cd financial-adviser-backend
+Example `.env`:
+```env
+SUPABASE_URL=https://<your-supabase-project>.supabase.co
+SUPABASE_KEY=<your-supabase-service-role-key>
+TAVILY_API_KEY=<your-tavily-api-key>
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
+---
 
+## 🛠 Local Development Setup
 
-### 2. Create a Virtual Environment
-
+### 1. Clone the repository
 ```bash
-python -m venv venv
+git clone <your-repo-url>
+cd <project-directory>
+```
 
+### 2. Create a virtual environment
+```bash
+python -m venv .venv
+source .venv/bin/activate      # Linux/Mac
+.venv\Scripts\activate         # Windows
+```
 
-
-### 3. Activate the Virtual Environment
-
-- **Windows:**
-
-  ```bash
-  venv\Scripts\activate
-  ```
-
-- **macOS/Linux:**
-
-  ```bash
-  source venv/bin/activate
-
-
-### 4. Install Dependencies
-
+### 3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-
-### 5. Run the FastAPI Server
-
+### 4. Run the FastAPI server
 ```bash
 uvicorn main:app --reload
 ```
 
-
+The application will be available at:  
+👉 [http://localhost:8000](http://localhost:8000)
 
 ---
 
-##  Project Structure
+## 🐳 Running with Docker
 
-```
-.
-├── main.py
-├── requirements.txt
-├── app/
-│   ├── migrations/
-│   ├── services/
-│   └── ...
+### 1. Build the Docker image
+```bash
+docker build -t fastapi-backend .
 ```
 
+### 2. Run the container with `.env`
+```bash
+docker run -d -p 8000:8000 --env-file .env fastapi-backend
+```
+
+The API will be available at:  
+ [http://localhost:8000](http://localhost:8000)
+
 ---
 
-##  Notes
-
-- Requires **Python 3.9+**
-- Place any environment variables in a `.env` file if needed
-- Server will run at: `http://127.0.0.1:8000`
+##  API Documentation
+FastAPI automatically provides documentation:
+- Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+- ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
 ---
+
+## Supabase Setup
+
+1. **Sign up at Supabase**  
+   [https://supabase.com/](https://supabase.com/)
+
+2. **Create a new project**  
+   - Give it a name and choose a database password.
+   - Wait until the project is initialized.
+
+3. **Get your API credentials**  
+   - Go to `Project Settings > API`.
+   - Copy:
+     - **Project URL** → `SUPABASE_URL`
+     - **Service Role Key** → `SUPABASE_KEY`
+
+4. **Import the database dump file**  
+   - Go to the `SQL Editor` in Supabase.
+   - Click `Upload` and choose the provided dump file.
+   - Execute it to create all required tables automatically.
+
+---
+
+##  Next Steps
+- Configure your Supabase database using the provided dump file.
+- Add Tavily and Anthropic API keys to `.env`.
+- Test the `/auth` and `/api` routes.
+- Deploy using Docker or Docker Compose if needed.
