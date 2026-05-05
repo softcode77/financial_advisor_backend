@@ -4,6 +4,8 @@ from jose import jwt, JWTError
 import os
 # from services.chat import chat
 from services.chat import chat as chat_service
+from fastapi.responses import StreamingResponse
+import json
 
 router = APIRouter()
 SECRET_KEY = os.getenv("JWT_SECRET")
@@ -26,11 +28,17 @@ def create_thread(thread: ChatThreadCreate, user_email: str = Depends(get_curren
     return {"message": "Thread created", "thread_id": thread_id}
 
 @router.post("/chat/{thread_id}")
-def add_chat_message(thread_id: str, chat: ChatMessageCreate, user_email: str = Depends(get_current_user)):
+def add_chat_message(thread_id: str, chat: ChatMessageCreate, user_email: str = Depends(get_current_user)):    
     chat_service.add_user_message(thread_id, chat.message)
-    llm_response = chat_service.handle_llm_response(thread_id)
-    chat_service.add_llm_response(thread_id, llm_response)
-    return {"response": llm_response}
+    
+    def generate_response():
+        complete_response = ""
+        for chunk in chat_service.handle_llm_response(thread_id):
+            complete_response += chunk
+            yield f"data: {json.dumps({'chunk': chunk})}\n\n"
+        chat_service.add_llm_response(thread_id, complete_response)
+    
+    return StreamingResponse(generate_response(), media_type="text/plain")
 
 @router.get("/threads")
 def get_threads(user_email: str = Depends(get_current_user)):

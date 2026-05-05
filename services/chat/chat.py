@@ -67,3 +67,5 @@ def get_chat_history(thread_id, user_email):
 def handle_llm_response(thread_id):
     history = get_message_history(thread_id)
     return _agent(thread_id, history)
+
+

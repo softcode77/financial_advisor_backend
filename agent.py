@@ -6,7 +6,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 import os
 from dotenv import load_dotenv
-
+import time
 
 load_dotenv()
 
@@ -25,20 +25,29 @@ search = TavilySearch(max_results=2)
 tools = [search]
 agent_executor = create_react_agent(model, tools, checkpointer=memory, prompt=prompt)
 
-def _agent(thread_id: str, message_history: list[dict]) -> str:
+
+
+def _agent(thread_id: str, message_history: list[dict]):
     """
     message_history should be a list of {"sender": ..., "message": ...}
     """
-    # Lanhchain format is {"role": "user" or "assistant", "content": ...}
+    # Langchain format is {"role": "user" or "assistant", "content": ...}
     # List comprehension to convert message into dictionary so the agent can understand it. 
     langchain_messages = [
         {"role": "user" if message["sender"] == "user" else "assistant", "content": message["message"]}  for message in message_history
     ]
-
     config = {"configurable": {"thread_id": thread_id}}
-
-    response = None
+    
+    # Get complete response first
+    response = ""
     for step in agent_executor.stream({"messages": langchain_messages}, config, stream_mode="values"):
         response = step["messages"][-1].content
+    
+    # Split into words and yield one by one
+    words = response.split()
+    for word in words:
+        yield word + " "
+        time.sleep(0.1)  # Pause between words
 
-    return response
+
+
